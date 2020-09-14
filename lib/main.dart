@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -52,8 +50,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class Li extends StatefulWidget {
-  Li({Key key, this.title, this.isChecked, this.remove}) : super(key: key);
+  Li({Key key, this.index, this.title, this.isChecked, this.remove})
+      : super(key: key);
 
+  final int index;
   final String title;
   final bool isChecked;
   final Function remove;
@@ -87,7 +87,7 @@ class _LiState extends State<Li> {
         //       });
         //     }),
         Text(
-          widget.title,
+          '${widget.index + 1}、 ${widget.title}',
           style: TextStyle(
               color: Color.fromRGBO(255, 0, 0, 1),
               decoration: _checkboxstatic == true
@@ -96,7 +96,7 @@ class _LiState extends State<Li> {
         ),
         FlatButton(
             onPressed: widget.remove,
-            child: Text(_checkboxstatic ? '重做' : '已完成'))
+            child: Text(_checkboxstatic ? '重做' : '完成'))
       ],
     );
   }
@@ -112,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     for (int i = 0; i < todoList.length; i++) {
       list.add(Li(
+        index: i,
         title: todoList[i],
         isChecked: false,
         remove: () {
@@ -132,12 +133,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
     for (int i = 0; i < history.length; i++) {
       list.add(Li(
+        index: i,
         title: history[i],
         isChecked: true,
         remove: () {
           // print(i);
           setState(() {
-            todoList.add(history[i]);
+            todoList.insert(0, history[i]);
             history.removeAt(i);
           });
         },
@@ -229,12 +231,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     // },
                     onEditingComplete: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      print(_todoInput.text.isEmpty);
+
                       if (_todoInput.text.isEmpty) {
                         return;
                       }
                       setState(() {
-                        todoList.add(_todoInput.text);
+                        todoList.insert(0, _todoInput.text);
                         _todoInput.text = '';
                       });
                     }),
@@ -252,7 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     return;
                   }
                   setState(() {
-                    todoList.add(_todoInput.text);
+                    todoList.insert(0, _todoInput.text);
                     _todoInput.text = '';
                   });
                 },
@@ -263,6 +265,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text('todo ${_getData().length}'),
               Container(
+                padding: EdgeInsets.only(left: 30),
                 child: ListView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -271,6 +274,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text('历史记录 ${_getHistory().length}'),
               Container(
+                padding: EdgeInsets.only(left: 30),
                 child: ListView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
