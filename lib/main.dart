@@ -76,16 +76,17 @@ class _LiState extends State<Li> {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        // Checkbox(
-        //     value: _checkboxstatic,
-        //     onChanged: (val) {
-        //       if (val) {
-        //         widget.remove();
-        //       }
-        //       setState(() {
-        //         _checkboxstatic = val;
-        //       });
-        //     }),
+        Checkbox(
+            value: _checkboxstatic,
+            onChanged: (val) {
+              // if (val) {
+              //   widget.remove();
+              // }
+              widget.remove(val);
+              setState(() {
+                _checkboxstatic = val;
+              });
+            }),
         Text(
           '${widget.index + 1}、 ${widget.title}',
           style: TextStyle(
@@ -94,9 +95,9 @@ class _LiState extends State<Li> {
                   ? TextDecoration.lineThrough
                   : TextDecoration.none),
         ),
-        FlatButton(
-            onPressed: widget.remove,
-            child: Text(_checkboxstatic ? '重做' : '完成'))
+        // FlatButton(
+        //     onPressed: widget.remove,
+        //     child: Text(_checkboxstatic ? '重做' : '完成'))
       ],
     );
   }
@@ -104,23 +105,26 @@ class _LiState extends State<Li> {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  List todoList = [];
+  List todoList = [
+    {'checked': false, 'content': '12345'}
+  ];
   List history = [];
 
   List<Widget> _getData() {
     List<Widget> list = new List();
 
     for (int i = 0; i < todoList.length; i++) {
+      print('$i:${todoList[i]['checked']}');
       list.add(Li(
         index: i,
-        title: todoList[i],
-        isChecked: false,
-        remove: () {
-          // print(i);
-          // var a = todoList[i];
+        title: todoList[i]['content'],
+        isChecked: todoList[i]['checked'],
+        remove: (val) {
+          print(val);
           setState(() {
-            history.add(todoList[i]);
-            todoList.removeAt(i);
+            // history.add(todoList[i]);
+            // todoList.removeAt(i);
+            todoList[i]['checked'] = val;
           });
         },
       ));
@@ -158,6 +162,17 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+    });
+  }
+
+  void addTodoList() {
+    if (_todoInput.text.isEmpty) {
+      return;
+    }
+    final obj = {'checked': false, 'content': _todoInput.text};
+    setState(() {
+      todoList.insert(0, obj);
+      _todoInput.text = '';
     });
   }
 
@@ -231,14 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     // },
                     onEditingComplete: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-
-                      if (_todoInput.text.isEmpty) {
-                        return;
-                      }
-                      setState(() {
-                        todoList.insert(0, _todoInput.text);
-                        _todoInput.text = '';
-                      });
+                      addTodoList();
                     }),
               ),
               FlatButton(
@@ -250,13 +258,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
                 onPressed: () {
-                  if (_todoInput.text.isEmpty) {
-                    return;
-                  }
-                  setState(() {
-                    todoList.insert(0, _todoInput.text);
-                    _todoInput.text = '';
-                  });
+                  addTodoList();
                 },
               ),
               Text(
@@ -273,14 +275,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Text('历史记录 ${_getHistory().length}'),
-              Container(
-                padding: EdgeInsets.only(left: 30),
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: _getHistory(),
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.only(left: 30),
+              //   child: ListView(
+              //     shrinkWrap: true,
+              //     physics: NeverScrollableScrollPhysics(),
+              //     children: _getHistory(),
+              //   ),
+              // ),
             ],
           ),
         ),
