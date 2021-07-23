@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'mine_page.dart';
+import 'nav.dart' as nav;
 
 void main() {
   runApp(MyApp());
@@ -9,25 +12,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo222',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.green[400],
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter2222 '),
-    );
+        title: 'Flutter Demo222',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.green,
+          // This makes the visual density adapt to the platform that you run
+          // the app on. For desktop platforms, the controls will be smaller and
+          // closer together (more dense) than on mobile platforms.
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: MyHomePage(title: '翻牌子 '),
+        routes: {
+          '/home': (BuildContext context) => MyHomePage(
+                title: '122',
+              ),
+          '/mine': (BuildContext context) => MinePage()
+        },
+        initialRoute: '/home');
   }
 }
 
@@ -49,69 +58,16 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class Li extends StatefulWidget {
-  Li({Key key, this.index, this.title, this.isChecked, this.remove})
-      : super(key: key);
-
-  final int index;
-  final String title;
-  final bool isChecked;
-  final Function remove;
-  @override
-  State<StatefulWidget> createState() {
-    return _LiState();
-  }
-}
-
-class _LiState extends State<Li> {
-  bool _checkboxstatic;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkboxstatic = widget.isChecked;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Checkbox(
-            value: _checkboxstatic,
-            onChanged: (val) {
-              // if (val) {
-              //   widget.remove();
-              // }
-              widget.remove(val);
-              setState(() {
-                _checkboxstatic = val;
-              });
-            }),
-        Text(
-          '${widget.index + 1}、 ${widget.title}',
-          style: TextStyle(
-              color: Color.fromRGBO(255, 0, 0, 1),
-              decoration: _checkboxstatic == true
-                  ? TextDecoration.lineThrough
-                  : TextDecoration.none),
-        ),
-        // FlatButton(
-        //     onPressed: widget.remove,
-        //     child: Text(_checkboxstatic ? '重做' : '完成'))
-      ],
-    );
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _selectIndex = 0;
   List todoList = [
     {'checked': false, 'content': '12345'}
   ];
   List history = [];
 
   List<Widget> _getData() {
-    List<Widget> list = new List();
+    List<Widget> list = [];
 
     for (int i = 0; i < todoList.length; i++) {
       print('$i:${todoList[i]['checked']}');
@@ -133,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Widget> _getHistory() {
-    List<Widget> list = new List();
+    List<Widget> list = [];
 
     for (int i = 0; i < history.length; i++) {
       list.add(Li(
@@ -149,6 +105,26 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ));
     }
+    return list;
+  }
+
+  List<Widget> _getBox() {
+    List<Widget> list = [];
+    for (int i = 0; i < 9; i++) {
+      list.add(GestureDetector(
+        onTap: () {
+          print('super$i');
+        },
+        child: Container(
+            margin: EdgeInsets.all(10),
+            height: 100,
+            width: 100,
+            color: Colors.green[50],
+            alignment: AlignmentDirectional.center,
+            child: Text('点我')),
+      ));
+    }
+
     return list;
   }
 
@@ -186,112 +162,97 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       // resizeToAvoidBottomPadding: false,
-
-      // appBar: AppBar(
-      //   // Here we take the value from the MyHomePage object that was created by
-      //   // the App.build method, and use it to set our appbar title.
-      //   title: Text(widget.title),
-      // ),
-      body: SingleChildScrollView(
-        child: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: Column(
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug painting" (press "p" in the console, choose the
-            // "Toggle Debug Paint" action from the Flutter Inspector in Android
-            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-            // to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-
-            mainAxisAlignment: MainAxisAlignment.start,
-            // mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                height: 100,
-                color: Color.fromRGBO(255, 0, 0, 1),
-                padding: EdgeInsets.only(top: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'todoList',
-                      style: TextStyle(
-                          color: Color.fromRGBO(255, 255, 255, 1),
-                          fontSize: 30),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 30, right: 30),
-                child: TextField(
-                    controller: _todoInput,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        labelText: "做点什么",
-                        hintText: "您要做什么",
-                        prefixIcon: Icon(Icons.add_alarm)),
-                    // onChanged: (v) {
-                    //   print("onChange: $v");
-                    // },
-                    onEditingComplete: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      addTodoList();
-                    }),
-              ),
-              FlatButton(
-                color: Colors.blue,
-                highlightColor: Colors.blue[700],
-                colorBrightness: Brightness.dark,
-                splashColor: Colors.grey,
-                child: Text("Submit"),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
-                onPressed: () {
-                  addTodoList();
-                },
-              ),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              Text('todo ${_getData().length}'),
-              Container(
-                padding: EdgeInsets.only(left: 30),
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: _getData(),
-                ),
-              ),
-              Text('历史记录 ${_getHistory().length}'),
-              // Container(
-              //   padding: EdgeInsets.only(left: 30),
-              //   child: ListView(
-              //     shrinkWrap: true,
-              //     physics: NeverScrollableScrollPhysics(),
-              //     children: _getHistory(),
-              //   ),
-              // ),
-            ],
-          ),
-        ),
+      bottomNavigationBar: nav.bottom_nav(context, 0),
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
+      ),
+      // body: SingleChildScrollView(
+      //   child: Column(children: [
+      //     Expanded(child: Container(
+      //     color: Colors.black45,
+      //     alignment: Alignment.center,
+      //     child: Wrap(
+      //       // crossAxisAlignment: WrapCrossAlignment.center,
+      //       children: _getBox(),
+      //     ),
+      //   ),
+      // )
+      //   ],),
+      body: Flex(
+        children: [
+          Expanded(
+              child: Container(
+                  color: Colors.red[300],
+                  alignment: Alignment.center,
+                  child: Wrap(
+                    // crossAxisAlignment: WrapCrossAlignment.center,
+                    children: _getBox(),
+                  )))
+        ],
+        direction: Axis.vertical,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class Li extends StatefulWidget {
+  Li({Key key, this.index, this.title, this.isChecked, this.remove})
+      : super(key: key);
+
+  final int index;
+  final String title;
+  final bool isChecked;
+  final Function remove;
+  @override
+  State<StatefulWidget> createState() {
+    return _LiState();
+  }
+}
+
+class _LiState extends State<Li> {
+  bool _checkboxstatic;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _checkboxstatic = widget.isChecked;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Checkbox(
+            value: _checkboxstatic,
+            onChanged: (val) {
+              // if (val) {
+              //   widget.remove();
+              // }
+              widget.remove(val);
+              setState(() {
+                _checkboxstatic = val;
+              });
+            }),
+        Text(
+          '${widget.index + 1}、 ${widget.title}',
+          style: TextStyle(
+              color: Color.fromRGBO(255, 0, 0, 1),
+              decoration: _checkboxstatic == true
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none),
+        ),
+        // FlatButton(
+        //     onPressed: widget.remove,
+        //     child: Text(_checkboxstatic ? '重做' : '完成'))
+      ],
     );
   }
 }
