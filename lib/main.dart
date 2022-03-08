@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'mine_page.dart';
 import 'nav.dart' as nav;
