@@ -1,18 +1,19 @@
 // library mine_page;
 
 import 'package:flutter/material.dart';
-import 'nav.dart';
+import '../nav.dart';
 
-class MinePage extends StatefulWidget {
+class SearchPage extends StatefulWidget {
   @override
   _MinePageState createState() => _MinePageState();
 }
 
-class _MinePageState extends State<MinePage> {
+class _MinePageState extends State<SearchPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('查询')),
       bottomNavigationBar: bottom_nav(context, 1),
       body: Container(
           padding: EdgeInsets.all(10),
@@ -25,7 +26,7 @@ class _MinePageState extends State<MinePage> {
                     padding: EdgeInsets.only(top: 50),
                     child: TextFormField(
                       decoration: const InputDecoration(
-                        hintText: 'Enter your email',
+                        hintText: 'Enter your word',
                       ),
                       validator: (String value) {
                         if (value == null || value.isEmpty) {

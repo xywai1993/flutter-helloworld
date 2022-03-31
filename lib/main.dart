@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'mine_page.dart';
+// import 'mine_page.dart';
+import 'pages/mine.dart';
+import 'pages/search.dart';
+import 'login_page.dart';
 import 'nav.dart' as nav;
 
 void main() {
@@ -28,14 +31,18 @@ class MyApp extends StatelessWidget {
           // closer together (more dense) than on mobile platforms.
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: MyHomePage(title: '翻牌子 '),
+        home: MyHomePage(
+          title: '122',
+        ),
         routes: {
+          '/login': (context) => LoginPage('title'),
           '/home': (BuildContext context) => MyHomePage(
                 title: '122',
               ),
+          '/search': (context) => SearchPage(),
           '/mine': (BuildContext context) => MinePage()
         },
-        initialRoute: '/home');
+        initialRoute: '/login');
   }
 }
 
@@ -65,48 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
   List history = [];
 
-  List<Widget> _getData() {
-    List<Widget> list = [];
-
-    for (int i = 0; i < todoList.length; i++) {
-      print('$i:${todoList[i]['checked']}');
-      list.add(Li(
-        index: i,
-        title: todoList[i]['content'],
-        isChecked: todoList[i]['checked'],
-        remove: (val) {
-          print(val);
-          setState(() {
-            // history.add(todoList[i]);
-            // todoList.removeAt(i);
-            todoList[i]['checked'] = val;
-          });
-        },
-      ));
-    }
-    return list;
-  }
-
-  List<Widget> _getHistory() {
-    List<Widget> list = [];
-
-    for (int i = 0; i < history.length; i++) {
-      list.add(Li(
-        index: i,
-        title: history[i],
-        isChecked: true,
-        remove: () {
-          // print(i);
-          setState(() {
-            todoList.insert(0, history[i]);
-            history.removeAt(i);
-          });
-        },
-      ));
-    }
-    return list;
-  }
-
   List<Widget> _getBox() {
     List<Widget> list = [];
     for (int i = 0; i < 9; i++) {
@@ -130,25 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _todoInput = TextEditingController();
 
   void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  void addTodoList() {
-    if (_todoInput.text.isEmpty) {
-      return;
-    }
-    final obj = {'checked': false, 'content': _todoInput.text};
-    setState(() {
-      todoList.insert(0, obj);
-      _todoInput.text = '';
-    });
+    // setState(() {
+    //   print('object');
+    //   _counter++;
+    // });
   }
 
   @override
@@ -197,61 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-
-class Li extends StatefulWidget {
-  Li({Key key, this.index, this.title, this.isChecked, this.remove})
-      : super(key: key);
-
-  final int index;
-  final String title;
-  final bool isChecked;
-  final Function remove;
-  @override
-  State<StatefulWidget> createState() {
-    return _LiState();
-  }
-}
-
-class _LiState extends State<Li> {
-  bool _checkboxstatic;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _checkboxstatic = widget.isChecked;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Checkbox(
-            value: _checkboxstatic,
-            onChanged: (val) {
-              // if (val) {
-              //   widget.remove();
-              // }
-              widget.remove(val);
-              setState(() {
-                _checkboxstatic = val;
-              });
-            }),
-        Text(
-          '${widget.index + 1}、 ${widget.title}',
-          style: TextStyle(
-              color: Color.fromRGBO(255, 0, 0, 1),
-              decoration: _checkboxstatic == true
-                  ? TextDecoration.lineThrough
-                  : TextDecoration.none),
-        ),
-        // FlatButton(
-        //     onPressed: widget.remove,
-        //     child: Text(_checkboxstatic ? '重做' : '完成'))
-      ],
     );
   }
 }
