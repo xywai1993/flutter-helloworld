@@ -1,7 +1,7 @@
 // library mine_page;
 
 import 'package:flutter/material.dart';
-import 'nav.dart';
+import '../nav.dart';
 
 class LoginPage extends StatefulWidget {
   final title;
@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
-          margin: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 0),
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
               color: Color.fromRGBO(0, 0, 0, .5),
@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: const InputDecoration(
                       labelStyle:
                           TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
-                      hintText: 'Enter your email',
+                      hintText: 'Enter your username',
                     ),
                     validator: (String value) {
                       if (value == null || value.isEmpty) {

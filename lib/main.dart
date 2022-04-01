@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'mine_page.dart';
 import 'pages/mine.dart';
 import 'pages/search.dart';
-import 'login_page.dart';
+import 'pages/login_page.dart';
 import 'nav.dart' as nav;
 
 void main() {

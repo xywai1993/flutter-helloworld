@@ -22,6 +22,7 @@ class _MinePageState extends State<SearchPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+
                 Padding(
                     padding: EdgeInsets.only(top: 50),
                     child: TextFormField(
