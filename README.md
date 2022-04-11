@@ -1,24 +1,43 @@
-# helloworld
-
-开始折腾 flutter，先做个 TODOlist 再说
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
--   [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
--   [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-# note：
+# hello world
 
 ## Container
 
 -   配置了 alignment 属性将会填充满父元素大小
+
+## 按钮圆角
+
+两种 按钮圆角的方式
+
+```dart
+
+OutlinedButton(
+    child: const Text(
+    "继续",
+    style: TextStyle(
+        fontSize: 16, fontWeight: FontWeight.bold),
+    ),
+    style: OutlinedButton.styleFrom(shape:RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(50),
+    ) ),
+    onPressed: () {},
+)
+
+ MaterialButton(
+    color: AppColors.primaryColor,
+    textColor: Colors.white,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+    ),
+    child: const Text(
+        "开始锻炼",
+        style:
+            TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    ),
+    onPressed: () {},
+)
+```
+
+
+## 键盘弹起导致 overflow 
+
+把Scaffold的resizeToAvoidBottomInset属性设置为false，这样在键盘弹出时将不会resize(输入框抵住键盘)
